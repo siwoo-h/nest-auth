@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '@src/auth/auth.service';
 import { AuthCredentialsDto } from '@src/auth/dto/auth-credential.dto';
 
@@ -14,5 +15,11 @@ export class AuthController {
   @Post('/signin')
   signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
     return this.authService.signIn(authCredentialsDto);
+  }
+
+  @Post('/test')
+  @UseGuards(AuthGuard()) // request에 user 객체 포함
+  test(@Req() req) {
+    console.log('req', req);
   }
 }
