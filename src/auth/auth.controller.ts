@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseG
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '@src/auth/auth.service';
 import { AuthCredentialsDto } from '@src/auth/dto/auth-credential.dto';
+import { GetUser } from './get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +20,7 @@ export class AuthController {
 
   @Post('/test')
   @UseGuards(AuthGuard()) // request에 user 객체 포함
-  test(@Req() req) {
-    console.log('req', req);
+  test(@GetUser() user) {
+    console.log('user', user);
   }
 }
