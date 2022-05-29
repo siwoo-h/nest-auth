@@ -1,9 +1,12 @@
+import * as config from 'config';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { User } from './entities/user.entity';
-import { UserRepository } from './repository/user.repositoy';
+
+import { User } from '@src/auth/entities/user.entity';
+import { UserRepository } from '@src/auth/repository/user.repositoy';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -11,9 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {
+    const jwtConfig = config.get('jwt');
     super({
       // 토큰 유효성 검사
-      secretOrKey: 'Secret1234',
+      secretOrKey: process.env.JWT_SECRET || jwtConfig.secret,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
