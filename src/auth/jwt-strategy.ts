@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '@src/auth/entities/user.entity';
 import { UserRepository } from '@src/auth/repository/user.repositoy';
+import { VerifiedToken } from '@src/auth/interface/auth.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -22,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload) {
+  async validate(payload: VerifiedToken) {
     const { username } = payload;
     const user: User = await this.userRepository.findOne({ username });
 
