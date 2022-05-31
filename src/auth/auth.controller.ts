@@ -2,6 +2,7 @@ import { Controller, Post, Body, ValidationPipe, UseGuards, Logger } from '@nest
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '@src/auth/auth.service';
 import { AuthCredentialsDto } from '@src/auth/dto/auth-credential.dto';
+import { Role, Roles } from '@src/common/role.guard';
 import { GetUser } from './get-user.decorator';
 
 @Controller('auth')
@@ -21,6 +22,7 @@ export class AuthController {
 
   @Post('/test')
   @UseGuards(AuthGuard()) // request에 user 객체 포함
+  @Roles(Role.USER, Role.ADMIN)
   test(@GetUser() user) {
     this.logger.verbose(`User ${user.username} trying to access auth controller`);
     console.log('user', user);
