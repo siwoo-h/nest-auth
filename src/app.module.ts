@@ -9,6 +9,7 @@ import { typeORMConfig } from '@src/config/typeorm.config';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
+    // 10 requests from the same IP can be made to a single endpoint in 1 minute.
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
