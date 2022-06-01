@@ -1,7 +1,8 @@
 db:
   host: 'localhost'
   username: 'postgres'
-  password: 'postgres'
+  password: 'example'
+  database: 'nest-auth'
   synchronize: true
 
 jwt:
