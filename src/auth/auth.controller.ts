@@ -1,6 +1,6 @@
-import { Controller, Post, Body, ValidationPipe, UseGuards, Logger, Get } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, UseGuards, Logger, Get, HttpCode } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBody, ApiHeader } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from '@src/auth/auth.service';
 import { AuthCredentialsDto } from '@src/auth/dto/auth-credential.dto';
 import { Role, Roles } from '@src/common/role.guard';
@@ -22,7 +22,10 @@ export class AuthController {
     name: 'X-Origin',
     description: 'Custom header',
   })
+  @ApiResponse({ status: 200, description: 'Log-in succeed.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Post('/signin')
+  @HttpCode(200)
   signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
     return this.authService.signIn(authCredentialsDto);
   }
